@@ -1,0 +1,121 @@
+<div class="border border-secondary-subtle rounded p-4">
+    <div class="mb-3 row">
+		<label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
+		<div class="col-xs-3 col-sm-auto">
+			<input
+				id="table-complete-search"
+				type="text"
+				class="form-control"
+				name="searchTerm"
+				[(ngModel)]="service.searchTerm"
+			/>
+		</div>
+		@if (service.loading$ | async) {
+			<span class="col col-form-label">Loading...</span>
+		}
+	</div>
+    <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th 
+                        scope="col"
+                        sortable="name"
+                        (sort)="onSort($event)"
+                    >
+                        promotion
+                        <i class="bi" 
+                            [ngClass]="{ 
+                                'bi-arrow-up': sortValues.direction === 'asc' && sortValues.column === 'name', 
+                                'bi-arrow-down': sortValues.direction === 'desc' && sortValues.column === 'name'}"
+                        ></i>
+                    </th>
+                    <th 
+                        scope="col"
+                        sortable="target"
+                        (sort)="onSort($event)"
+                    >
+                        Target
+                        <i class="bi" 
+                        [ngClass]="{ 
+                            'bi-arrow-up': sortValues.direction === 'asc' && sortValues.column === 'target', 
+                            'bi-arrow-down': sortValues.direction === 'desc' && sortValues.column === 'target'}"
+                        ></i>
+                    </th>
+                    <th 
+                        scope="col"
+                        sortable="price"
+                        (sort)="onSort($event)"
+                    >
+                        Price
+                        <i class="bi" 
+                        [ngClass]="{ 
+                            'bi-arrow-up': sortValues.direction === 'asc' && sortValues.column === 'price', 
+                            'bi-arrow-down': sortValues.direction === 'desc' && sortValues.column === 'price'}"
+                        ></i>
+                    </th>
+                    <th 
+                        scope="col"
+                        sortable="discount"
+                        (sort)="onSort($event)"
+                    >
+                        Discount
+                        <i class="bi" 
+                        [ngClass]="{ 
+                            'bi-arrow-up': sortValues.direction === 'asc' && sortValues.column === 'discount', 
+                            'bi-arrow-down': sortValues.direction === 'desc' && sortValues.column === 'discount'}"
+                        ></i>
+                    </th>
+                    <th
+                        scope="col"
+                        sortable="startDate"
+                        (sort)="onSort($event)" 
+                    >
+                        Start date
+                        <i class="bi" 
+                        [ngClass]="{ 
+                            'bi-arrow-up': sortValues.direction === 'asc' && sortValues.column === 'startDate', 
+                            'bi-arrow-down': sortValues.direction === 'desc' && sortValues.column === 'startDate'}"
+                        ></i>
+                    </th>
+                    <th 
+                        scope="col"
+                        sortable="endDate"
+                        (sort)="onSort($event)"
+                    >
+                        End date
+                        <i class="bi" 
+                        [ngClass]="{ 
+                            'bi-arrow-up': sortValues.direction === 'asc' && sortValues.column === 'endDate', 
+                            'bi-arrow-down': sortValues.direction === 'desc' && sortValues.column === 'endDate'}"
+                        ></i>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                @for (promotion of promotions$ | async; let i = $index; track i) {
+                    <tr>
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td><ngb-highlight [result]="promotion.name" [term]="service.searchTerm"></ngb-highlight></td>
+                        <td><ngb-highlight [result]="promotion.target" [term]="service.searchTerm"></ngb-highlight></td>
+                        <td>{{ promotion.price | number }}</td>
+                        <td>{{ promotion.discount| number }}</td>
+                        <td>{{ promotion.startDate}}</td>
+                        <td>{{ promotion.endDate}}</td>
+                    </tr>
+                }
+            </tbody>
+    </table>
+    <div class="d-flex justify-content-end p-2">
+        <ngb-pagination
+            [(page)]="service.page"
+            [pageSize]="service.pageSize"
+            [collectionSize]="(service.total$ | async) || 0"
+        ></ngb-pagination>
+        <select class="form-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+			<option [ngValue]="5">5</option>
+			<option [ngValue]="10">10</option>
+			<option [ngValue]="20">20</option>
+		</select>
+    </div>
+</div>
