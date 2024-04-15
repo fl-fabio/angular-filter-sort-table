@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { PromotionService } from '../../services/promotion.service';
 import { FormsModule } from '@angular/forms';
 import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-promo-table',
@@ -25,6 +26,10 @@ export class PromoTableComponent {
   total$!: Observable<number>
 
   sortValues: SortValues = { direction: '', column: '' };
+
+  ngOnInit(): void {
+    Swal.fire("SweetAlert2 is working!");
+  }
 
   @ViewChildren(SortableDirective) headers!: QueryList<SortableDirective>;
 

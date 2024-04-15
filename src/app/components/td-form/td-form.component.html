@@ -1,0 +1,25 @@
+<h1>Bootstrap Form</h1>
+<form>
+  <div class="mb-3">
+    <label for="domainText" class="form-label">Domain</label>
+    <input
+    class="form-control"
+    appMultiValidator
+    id="domainText"
+    type="text"
+    name="domainText"
+    placeholder="Default input"
+    #domainText="ngModel"
+    validateOption="domain"
+    [(ngModel)]="text"
+    (ngModelChange)="logInput(domainText)"
+    />
+    @if(domainText.touched && domainText.dirty) {
+        @if(!domainText.valid && domainText.errors?.['domain']) {
+            <small class="text-danger">{{ domainText.errors?.['domain'] }}</small>
+        } @else {
+            <small class="text-success">Valid Domain</small>
+        }
+    }
+  </div>
+</form>
